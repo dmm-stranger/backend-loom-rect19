@@ -16,19 +16,18 @@ import User from "../models/User.model.js";
 
 const users = [
   {
-    name: process.env.ADMIN_NAME || "Admin User",
-    email: process.env.ADMIN_EMAIL || "[email protected]",
-    password: process.env.ADMIN_PASSWORD || "Admin@12345",
+    name: "Admin",
+    email: "admin@loom.com",
+    password: "Admin@12345",
     role: "admin",
   },
   {
     name: "Demo Customer",
-    email: "[email protected]",
+    email: "customer@loom.com",
     password: "Customer@123",
     role: "customer",
   },
 ];
-
 const importData = async () => {
   try {
     await connectDB();
@@ -57,7 +56,7 @@ const destroyData = async () => {
   }
 };
 
-if (process.argv[2] === "-d") {
+if (process.argv[ 2 ] === "-d") {
   destroyData();
 } else {
   importData();
