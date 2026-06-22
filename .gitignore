@@ -4,3 +4,7 @@ npm-debug.log*
 .DS_Store
 dist/
 coverage/
+
+# Local image uploads — never commit to git
+# Images are stored on the server filesystem
+uploads/

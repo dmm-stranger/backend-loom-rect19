@@ -1,17 +1,23 @@
 import express from "express";
 import authRoutes from "./auth.routes.js";
+import categoryRoutes from "./category.routes.js";
+import productRoutes from "./product.routes.js";
 
 const router = express.Router();
 
+// ─── Phase 1 ───────────────────────────────
 router.use("/auth", authRoutes);
 
-// Future phases will mount additional routers here:
-// router.use("/products", productRoutes);
-// router.use("/categories", categoryRoutes);
-// router.use("/cart", cartRoutes);
-// router.use("/wishlist", wishlistRoutes);
-// router.use("/orders", orderRoutes);
-// router.use("/payments", paymentRoutes);
-// router.use("/admin", adminRoutes);
+// ─── Phase 2 ───────────────────────────────
+router.use("/categories", categoryRoutes);
+router.use("/products", productRoutes);
+
+// ─── Coming in future phases ───────────────
+// router.use("/cart", cartRoutes);        Phase 3
+// router.use("/wishlist", wishlistRoutes); Phase 4
+// router.use("/reviews", reviewRoutes);   Phase 4
+// router.use("/orders", orderRoutes);     Phase 5
+// router.use("/payments", paymentRoutes); Phase 5
+// router.use("/admin", adminRoutes);      Phase 6
 
 export default router;
