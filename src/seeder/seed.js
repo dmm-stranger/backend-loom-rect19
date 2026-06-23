@@ -284,3 +284,9 @@ if (process.argv[2] === "-d") {
 } else {
   importData();
 }
+// Note: Coupon seeding is handled separately.
+// Run this in MongoDB shell or create via admin API:
+// POST /api/v1/admin/coupons (Phase 6)
+// Sample coupons for manual testing:
+// { code: "SAVE10", discountPercent: 10, minOrderAmount: 50, expiresAt: "2025-12-31" }
+// { code: "SAVE20", discountPercent: 20, minOrderAmount: 100, expiresAt: "2025-12-31" }

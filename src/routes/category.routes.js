@@ -26,13 +26,13 @@ router.get("/:id", getCategory);
 // ─────────────────────────────────────────────
 
 // POST /api/v1/categories       → create category (optional image upload)
-// router.post(
-//   "/",
-//   protect,
-//   authorize("admin"),
-//   upload.single("image"),   // multer reads one file from the "image" field
-//   createCategory
-// );
+router.post(
+  "/",
+  protect,
+  authorize("admin"),
+  upload.single("image"),   // multer reads one file from the "image" field
+  createCategory
+);
 
 // PUT /api/v1/categories/:id    → update category (optional new image)
 router.put(

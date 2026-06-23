@@ -2,6 +2,7 @@ import express from "express";
 import authRoutes from "./auth.routes.js";
 import categoryRoutes from "./category.routes.js";
 import productRoutes from "./product.routes.js";
+import cartRoutes from "./cart.routes.js";
 
 const router = express.Router();
 
@@ -12,8 +13,10 @@ router.use("/auth", authRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/products", productRoutes);
 
+// ─── Phase 3 ───────────────────────────────
+router.use("/cart", cartRoutes);
+
 // ─── Coming in future phases ───────────────
-// router.use("/cart", cartRoutes);        Phase 3
 // router.use("/wishlist", wishlistRoutes); Phase 4
 // router.use("/reviews", reviewRoutes);   Phase 4
 // router.use("/orders", orderRoutes);     Phase 5
