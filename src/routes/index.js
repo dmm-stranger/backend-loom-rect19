@@ -7,6 +7,7 @@ import wishlistRoutes from "./wishlist.routes.js";
 import reviewRoutes from "./review.routes.js";
 import orderRoutes from "./order.routes.js";
 import paymentRoutes from "./payment.routes.js";
+import adminRoutes from "./admin.routes.js";
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.use("/products/:productId/reviews", reviewRoutes);
 router.use("/orders", orderRoutes);
 router.use("/payments", paymentRoutes);
 
-// ─── Coming in Phase 6 ─────────────────────
-// router.use("/admin", adminRoutes);
+// ─── Phase 6 ───────────────────────────────
+router.use("/admin", adminRoutes);
 
 export default router;
