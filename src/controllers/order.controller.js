@@ -46,7 +46,7 @@ export const createOrder = asyncHandler(async (req, res) => {
   let couponCode = "";
 
   if (cart.coupon) {
-    const { valid, message } = cart.coupon.validate(cart.subtotal);
+    const { valid, message } = cart.coupon.isValid(cart.subtotal);
     if (valid) {
       discount = cart.coupon.calculateDiscount(cart.subtotal);
       couponCode = cart.coupon.code;

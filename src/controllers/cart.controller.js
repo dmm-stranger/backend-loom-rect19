@@ -119,7 +119,7 @@ export const addItem = asyncHandler(async (req, res) => {
     cart.items.push({
       product: product._id,
       name: product.name,
-      image: product.images[0]?.url || "",
+      image: product.images[ 0 ]?.url || "",
       price: product.discountPrice > 0 ? product.discountPrice : product.price,
       qty,
     });
@@ -227,7 +227,7 @@ export const applyCoupon = asyncHandler(async (req, res) => {
   if (!coupon) throw new ApiError(404, "Invalid coupon code");
 
   // Use the validate() instance method from Coupon model
-  const { valid, message } = coupon.validate(cart.subtotal);
+  const { valid, message } = coupon.isValid(cart.subtotal);
   if (!valid) throw new ApiError(400, message);
 
   cart.coupon = coupon._id;
