@@ -6,11 +6,11 @@
   "main": "src/server.js",
   "packageManager": "yarn@1.22.22",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
-    "seed": "node src/seeder/seed.js",
-    "seed:destroy": "node src/seeder/seed.js -d"
-  },
+  "dev": "nodemon src/server.js",
+  "start": "node src/server.js",
+  "seed": "node src/seeder/seed.js",
+  "seed:destroy": "node src/seeder/seed.js -d"
+},
   "dependencies": {
     "express": "^4.19.2",
     "mongoose": "^8.4.0",

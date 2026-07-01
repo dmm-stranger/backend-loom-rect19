@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
     success: true,
     message: "TechStore API is running",
     environment: process.env.NODE_ENV,
-    imageStorage: process.env.IMAGE_STORAGE || "local",
+    imageStorage: process.env.IMAGE_STORAGE
   });
 });
 
