@@ -18,33 +18,38 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [ true, "Name is required" ],
       trim: true,
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [ true, "Email is required" ],
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
+      validate: {
+        validator: function (v) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        },
+        message: "Please provide a valid email",
+      },
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [ true, "Password is required" ],
       minlength: 6,
       select: false, // never returned in queries by default
     },
     role: {
       type: String,
-      enum: ["customer", "admin"],
+      enum: [ "customer", "admin" ],
       default: "customer",
     },
     avatar: {
       url: { type: String, default: "" },
       public_id: { type: String, default: "" },
     },
-    addresses: [addressSchema],
+    addresses: [ addressSchema ],
   },
   { timestamps: true }
 );
