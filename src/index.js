@@ -23,3 +23,4 @@ export default async function handler(req, res) {
     });
   }
 }
+// api testing...: auth, ctegory, products, cart. running...
