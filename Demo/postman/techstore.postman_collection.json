@@ -1,0 +1,2231 @@
+{
+  "info": {
+    "_postman_id": "b66c7e33-63d7-464e-849e-9c75cd5f13f3",
+    "name": "techstore",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12016805"
+  },
+  "item": [
+    {
+      "name": "root",
+      "item": [
+        {
+          "name": "{{techstore}}/",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{techstore}}/",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "1. Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// রেসপন্স থেকে ডেটা JSON ফরম্যাটে নিবে",
+                  "const res = pm.response.json();",
+                  "// আপনার রেসপন্সে টোকেনটি যে নামে আছে, `aaccess_token` এর জায়গায় সেটি লিখুন",
+                  "if (res) {",
+                  "    pm.environment.set(\"TOKEN\", res.data.token);",
+                  "    console.log(\"✓ Token saved to environment\");",
+                  "} else {",
+                  "    console.log(res.data.token)",
+                  "    console.log(\"❌ Failed to extract token\");",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "strictSSL": false
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test2 User\",\n  \"email\": \"test2user@gmail.com\",\n  \"password\": \"Test@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/auth/register",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "2. Login (Customer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// রেসপন্স থেকে ডেটা JSON ফরম্যাটে নিবে",
+                  "const res = pm.response.json();",
+                  "// আপনার রেসপন্সে টোকেনটি যে নামে আছে, `aaccess_token` এর জায়গায় সেটি লিখুন",
+                  "if (res) {",
+                  "    pm.environment.set(\"TOKEN\", res.data.token);",
+                  "    console.log(\"✓ Token saved to environment\");",
+                  "} else {",
+                  "    console.log(res.data.token)",
+                  "    console.log(\"❌ Failed to extract token\");",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"Test@12345\"\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/auth/login",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// রেসপন্স থেকে ডেটা JSON ফরম্যাটে নিবে",
+                  "const res = pm.response.json();",
+                  "// আপনার রেসপন্সে টোকেনটি যে নামে আছে, `aaccess_token` এর জায়গায় সেটি লিখুন",
+                  "if (res) {",
+                  "    pm.environment.set(\"TOKEN\", res.data.token);",
+                  "    console.log(\"✓ Token saved to environment\");",
+                  "} else {",
+                  "    console.log(res.data.token)",
+                  "    console.log(\"❌ Failed to extract token\");",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@loom.com\",\n  \"password\": \"Admin@12345\"\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/auth/login",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get Current User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Parse the incoming JSON data",
+                  "const responseData = pm.response.json();",
+                  "console.log(responseData.data);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/auth/me",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// রেসপন্স থেকে ডেটা JSON ফরম্যাটে নিবে",
+                  "const res = pm.response.json();",
+                  "// আপনার রেসপন্সে টোকেনটি যে নামে আছে, `aaccess_token` এর জায়গায় সেটি লিখুন",
+                  "if (res) {",
+                  "pm.environment.set(\"TOKEN\", null);",
+                  "console.log(\"✓ Token saved to environment\");",
+                  "} else {",
+                  "console.log(res.data.token)",
+                  "console.log(\"❌ Failed to extract token\");",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/auth/logout",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "payment intent",
+      "item": [
+        {
+          "name": "34. Create Payment Intent",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"{{ORDER_ID}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/payments/create-payment-intent",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "create-payment-intent"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "35. Dashboard Stats",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/dashboard/stats",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "dashboard",
+                "stats"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "41. Create Coupon (Admin)",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"LTE20\",\n  \"discountPercent\": 20,\n  \"minOrderAmount\": 100,\n  \"maxUses\": 100,\n  \"expiresAt\": \"2026-12-31\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/coupons",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "42. Get All Coupons (Admin)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"Test@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/coupons",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "43. Update Coupon (Admin)",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"discountPercent\": 20,\n  \"isActive\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/coupons/{{COUPON_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons",
+                "{{COUPON_ID}}"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "44. Delete Coupon (Admin)",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/coupons/{{COUPON_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "coupons",
+                "{{COUPON_ID}}"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "40. Update User Role (Admin)/ Valid values",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"customer\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/users/{{USER_ID}}/role",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users",
+                "{{USER_ID}}",
+                "role"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "38. Get All Products (Admin)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/products?stock=in",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "stock",
+                  "value": "out",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "stock",
+                  "value": "low",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "stock",
+                  "value": "in",
+                  "type": "text"
+                }
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "37. Update Order Status (Admin) with valid values",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"processing\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/orders/{{ORDER_ID}}/status",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "orders",
+                "{{ORDER_ID}}",
+                "status"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "39. Get All Users (Admin)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/users",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "customer",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "test",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "36. Get All Orders (Admin)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"Test@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/admin/orders?limit=10",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "paymentStatus",
+                  "value": "paid",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "processing",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "type": "text"
+                }
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "profile",
+      "item": [
+        {
+          "name": "45. Update Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Dulon Molla",
+                  "type": "text",
+                  "uuid": "e629f6b7-c8e7-4091-bba7-4239b1fdcd65"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "093119a8-549c-4916-8094-e4ce4a3ff420",
+                  "src": "K5MDpkZ6N/33535.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/users/profile",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "46. Get Addresses",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/users/addresses",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "addresses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "47. Add Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Home\",\n  \"line1\": \"456 Oak Avenue\",\n  \"city\": \"Los Angeles\",\n  \"state\": \"CA\",\n  \"postalCode\": \"90001\",\n  \"country\": \"USA\",\n  \"isDefault\": true\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/users/addresses",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "addresses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "48. Update Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"city\": \"San Francisco\",\n  \"postalCode\": \"94102\"\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/users/addresses/{{ADDRESS_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "addresses",
+                "{{ADDRESS_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "49. Delete Address",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/users/addresses/{{ADDRESS_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "addresses",
+                "{{ADDRESS_ID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "item": [
+        {
+          "name": "8. Create Category (Admin)",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "VR Headsets",
+                  "type": "text",
+                  "uuid": "beb3d52d-cf68-4f1a-9926-ae810f462110"
+                },
+                {
+                  "key": "slug",
+                  "value": "vr-headsets",
+                  "type": "text"
+                },
+                {
+                  "key": "image.url",
+                  "type": "text",
+                  "value": "https://picsum.photos/id/201/400/300"
+                },
+                {
+                  "key": "image.public_id",
+                  "value": "seed_cat_smarthome",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/categories",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "6. Get All Categories",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/categories",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7. Get Single Category",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/categories/{{CATEGORY_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{CATEGORY_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "9. Update Category (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Audio",
+                  "type": "text",
+                  "uuid": "851fdd9c-8e1b-4add-8974-167f0d3ffd26"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/categories/{{CATEGORY_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{CATEGORY_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "10. Delete Category (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Audio",
+                  "type": "text",
+                  "uuid": "851fdd9c-8e1b-4add-8974-167f0d3ffd26",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/categories/{{CATEGORY_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "{{CATEGORY_ID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "cart",
+      "item": [
+        {
+          "name": "19. Add Item to Cart",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{PRODUCT_ID}}\",\n  \"qty\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/cart/items",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "18. Get Cart",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/cart",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "20. Update Cart Item Quantity",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"qty\":5\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/cart/items/{{ITEM_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items",
+                "{{ITEM_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "21. Remove Cart Item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/cart/items/{{ITEM_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "items",
+                "{{ITEM_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "22. Apply Coupon",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SAVE20\"\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/cart/apply-coupon",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "apply-coupon"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "23. Remove Coupon",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/cart/coupon",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart",
+                "coupon"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "24. Clear Cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/cart",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cart"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "wishlist",
+      "item": [
+        {
+          "name": "26. Add to Wishlist",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/wishlist/{{PRODUCT_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wishlist",
+                "{{PRODUCT_ID}}"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "25. Get Wishlist",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/wishlist",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wishlist"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "27. Remove from Wishlist",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/wishlist/{{PRODUCT_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wishlist",
+                "{{PRODUCT_ID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "products",
+      "item": [
+        {
+          "name": "15. Create Product (Admin)",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Samsung Galaxy Book Pro\",\n  \"description\": \"Lightweight professional laptop with AMOLED display and Intel Core i7\",\n  \"brand\": \"Samsung\",\n  \"category\": \"6a48e1075bf2da1fad988d8b\",\n  \"price\": 1299.99,\n  \"discountPrice\": 1199.99,\n  \"stock\": 20,\n  \"isFeatured\": false,\n  \"specs\": \"{\\\"Processor\\\":\\\"Intel Core i7\\\",\\\"RAM\\\":\\\"16GB\\\",\\\"Storage\\\":\\\"512GB SSD\\\"}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "11. Get All Products",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "12. Get Single Product",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products/{{PRODUCT_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{PRODUCT_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "13. Get Products — With Filters",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products?search=apple",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "3",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "price_asc",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "apple"
+                },
+                {
+                  "key": "category",
+                  "value": "{{CATEGORY_ID}}",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "100",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "500",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "rating",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "14. Get Featured Products",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products/featured",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "featured"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "16. Update Product (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 999.99,\n  \"stock\":30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products/{{PRODUCT_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{PRODUCT_ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "17. Delete Product (Admin)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products/{{PRODUCT_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{PRODUCT_ID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "reviews",
+      "item": [
+        {
+          "name": "29. Create or Update Review",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Absolutely amazing product! The performance is top notch and build quality is excellent.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products/{{PRODUCT_ID}}/reviews",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{PRODUCT_ID}}",
+                "reviews"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "28. Get Product Reviews",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products/{{PRODUCT_ID}}/reviews",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{PRODUCT_ID}}",
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "30. Delete Review",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"Test@12345\"\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/products/{{PRODUCT_ID}}/reviews/{{REVIEW_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "{{PRODUCT_ID}}",
+                "reviews",
+                "{{REVIEW_ID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "order",
+      "item": [
+        {
+          "name": "31. Create Order",
+          "protocolProfileBehavior": {
+            "strictSSL": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\": {\n    \"fullName\": \"Test User\",\n    \"line1\": \"123 Main Street\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"postalCode\": \"10001\",\n    \"country\": \"USA\",\n    \"phone\": \"+1234567890\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/orders",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ]
+            },
+            "description": "bbn"
+          },
+          "response": []
+        },
+        {
+          "name": "32. Get My Orders",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"Test@12345\"\n}"
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/orders/my",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "my"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "33. Get Single Order",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{techstore}}/api/v1/orders/{{ORDER_ID}}",
+              "host": [
+                "{{techstore}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "{{ORDER_ID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer_token_0pnl",
+      "secret": true
+    },
+    {
+      "key": "stripe_secret_key_0lmp",
+      "secret": true
+    }
+  ]
+}
