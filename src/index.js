@@ -23,4 +23,4 @@ export default async function handler(req, res) {
     });
   }
 }
-// api testing...: auth, ctegory, products, cart, whislist, revies, orders, payments intent, Admin, user profile. finished...
+// we eill start next day for impliment my project
