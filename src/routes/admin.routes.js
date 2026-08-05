@@ -1,77 +1,52 @@
 import express from "express";
 import { getDashboardStats } from "../controllers/admin/adminDashboard.controller.js";
-import {
-  getAllOrders,
-  updateOrderStatus,
-} from "../controllers/admin/adminOrder.controller.js";
-import { getAllProductsAdmin } from "../controllers/admin/adminProduct.controller.js";
-import {
-  getAllUsers,
-  updateUserRole,
-} from "../controllers/admin/adminUser.controller.js";
-import {
-  getAllCoupons,
-  createCoupon,
-  updateCoupon,
-  deleteCoupon,
-} from "../controllers/admin/adminCoupon.controller.js";
+import { getAllOrders, getOrderAdmin, updateOrderStatus, deleteOrder } from "../controllers/admin/adminOrder.controller.js";
+import { getAllProductsAdmin, getProductAdmin, toggleFeatured, updateStock } from "../controllers/admin/adminProduct.controller.js";
+import { getAllUsers, getUserAdmin, updateUserRole, deleteUser, banUser } from "../controllers/admin/adminUser.controller.js";
+import { getAllCoupons, createCoupon, updateCoupon, deleteCoupon } from "../controllers/admin/adminCoupon.controller.js";
+import { getAllReviews, deleteReviewAdmin } from "../controllers/admin/adminReview.controller.js";
+import { getSettings, updateSettings } from "../controllers/admin/adminSettings.controller.js";
 import { protect, authorize } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-// ─────────────────────────────────────────────
-//  GLOBAL MIDDLEWARE
-//  Every admin route requires:
-//  1. Valid JWT (protect)
-//  2. Admin role (authorize)
-//  Applied once here — no need to repeat on each route
-// ─────────────────────────────────────────────
 router.use(protect);
 router.use(authorize("admin"));
 
-// ─────────────────────────────────────────────
-//  DASHBOARD
-//  GET /api/v1/admin/dashboard/stats
-// ─────────────────────────────────────────────
+// Dashboard
 router.get("/dashboard/stats", getDashboardStats);
 
-// ─────────────────────────────────────────────
-//  ORDERS
-//  GET   /api/v1/admin/orders
-//  PATCH /api/v1/admin/orders/:id/status
-// ─────────────────────────────────────────────
-router.get("/orders", getAllOrders);
+// Orders
+router.get("/orders",              getAllOrders);
+router.get("/orders/:id",          getOrderAdmin);
 router.patch("/orders/:id/status", updateOrderStatus);
+router.delete("/orders/:id",       deleteOrder);
 
-// ─────────────────────────────────────────────
-//  PRODUCTS
-//  GET /api/v1/admin/products
-//  Note: Create/Update/Delete are on the public
-//  product router with admin protection already:
-//  POST   /api/v1/products       (admin only)
-//  PUT    /api/v1/products/:id   (admin only)
-//  DELETE /api/v1/products/:id   (admin only)
-// ─────────────────────────────────────────────
-router.get("/products", getAllProductsAdmin);
+// Products
+router.get("/products",                getAllProductsAdmin);
+router.get("/products/:id",            getProductAdmin);
+router.patch("/products/:id/featured", toggleFeatured);
+router.patch("/products/:id/stock",    updateStock);
 
-// ─────────────────────────────────────────────
-//  USERS
-//  GET   /api/v1/admin/users
-//  PATCH /api/v1/admin/users/:id/role
-// ─────────────────────────────────────────────
-router.get("/users", getAllUsers);
-router.patch("/users/:id/role", updateUserRole);
+// Users
+router.get("/users",             getAllUsers);
+router.get("/users/:id",         getUserAdmin);
+router.patch("/users/:id/role",  updateUserRole);
+router.patch("/users/:id/ban",   banUser);
+router.delete("/users/:id",      deleteUser);
 
-// ─────────────────────────────────────────────
-//  COUPONS
-//  GET    /api/v1/admin/coupons
-//  POST   /api/v1/admin/coupons
-//  PATCH  /api/v1/admin/coupons/:id
-//  DELETE /api/v1/admin/coupons/:id
-// ─────────────────────────────────────────────
-router.get("/coupons", getAllCoupons);
-router.post("/coupons", createCoupon);
-router.patch("/coupons/:id", updateCoupon);
+// Coupons
+router.get("/coupons",        getAllCoupons);
+router.post("/coupons",       createCoupon);
+router.patch("/coupons/:id",  updateCoupon);
 router.delete("/coupons/:id", deleteCoupon);
+
+// Reviews
+router.get("/reviews",        getAllReviews);
+router.delete("/reviews/:id", deleteReviewAdmin);
+
+// Settings
+router.get("/settings",   getSettings);
+router.patch("/settings", updateSettings);
 
 export default router;

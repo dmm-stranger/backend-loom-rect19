@@ -5,30 +5,42 @@ import { fileURLToPath } from "url";
 import ApiError from "../utils/ApiError.js";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname  = path.dirname(__filename);
 
 const UPLOADS_DIR = path.join(__dirname, "../../uploads");
 
-
-let uploadsDirReady = false;
-
-// ─── LOCAL FOLDER CREATION ─────────────────
-// Commented out — Vercel's filesystem is read-only
-// and does not allow creating folders at runtime.
-// When deploying to Vercel set IMAGE_STORAGE=cloudinary
-// Uncomment this block for local development only:
+// ─────────────────────────────────────────────
+//  SAFE DIRECTORY CREATION
+//  Wrapped in try/catch so this NEVER crashes
+//  the whole server.
 //
-// try {
-//   if (!fs.existsSync(UPLOADS_DIR)) {
-//     fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-//   }
-//   uploadsDirReady = true;
-// } catch (err) {
-//   console.error(
-//     `⚠️  Could not create uploads directory at ${UPLOADS_DIR}. ` +
-//     `Original error: ${err.message}`
-//   );
-// }
+//  Why this matters:
+//  On serverless platforms (Vercel, AWS Lambda)
+//  the filesystem is READ-ONLY except for /tmp.
+//  If IMAGE_STORAGE is accidentally left as
+//  "local" in that environment, mkdirSync()
+//  throws ENOENT/EROFS and crashes the entire
+//  function at import time — before Express
+//  even starts. This try/catch prevents that.
+//
+//  On Vercel you should always set
+//  IMAGE_STORAGE=cloudinary — this is just a
+//  safety net, not a replacement for that.
+// ─────────────────────────────────────────────
+let uploadsDirReady = false;
+try {
+  if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  }
+  uploadsDirReady = true;
+} catch (err) {
+  console.error(
+    `⚠️  Could not create uploads directory at ${UPLOADS_DIR}. ` +
+    `This usually means you're on a read-only filesystem (e.g. Vercel). ` +
+    `Set IMAGE_STORAGE=cloudinary in your environment variables. ` +
+    `Original error: ${err.message}`
+  );
+}
 
 // ─── Multer disk storage ───────────────────
 const storage = multer.diskStorage({
@@ -45,13 +57,15 @@ const storage = multer.diskStorage({
     cb(null, UPLOADS_DIR);
   },
   filename: (req, file, cb) => {
-    // ...   // leave this part unchanged
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
   },
 });
 
 const fileFilter = (req, file, cb) => {
   const allowed = /jpeg|jpg|png|webp/;
-  const validExt = allowed.test(path.extname(file.originalname).toLowerCase());
+  const validExt  = allowed.test(path.extname(file.originalname).toLowerCase());
   const validMime = allowed.test(file.mimetype);
   if (validExt && validMime) return cb(null, true);
   cb(new ApiError(400, "Only .jpg, .jpeg, .png and .webp images are allowed"));
