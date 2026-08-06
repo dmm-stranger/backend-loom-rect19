@@ -10,11 +10,9 @@ import notFound from "./middleware/notFound.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import { apiLimiter } from "./middleware/rateLimiter.middleware.js";
 
-
-
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname  = path.dirname(__filename);
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173", credentials: true }));
@@ -23,8 +21,14 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
-// Serve local uploads only when not using Cloudinary
-// 🚨 Warn loudly if running on Vercel without Cloudinary configured
+// ─────────────────────────────────────────────
+//  WARN IF LOCAL STORAGE ON A SERVERLESS HOST
+//  Vercel sets VERCEL=1 automatically — if local
+//  storage is still selected there, log a loud
+//  warning. The app won't crash (upload.local.js
+//  is now safe), but uploads WILL fail until
+//  IMAGE_STORAGE=cloudinary is set.
+// ─────────────────────────────────────────────
 if (process.env.VERCEL && process.env.IMAGE_STORAGE !== "cloudinary") {
   console.warn(
     "🚨 Running on Vercel with IMAGE_STORAGE=local. " +
@@ -45,7 +49,7 @@ app.get("/", (req, res) => {
     success: true,
     message: "TechStore API is running",
     environment: process.env.NODE_ENV,
-    imageStorage: process.env.IMAGE_STORAGE
+    imageStorage: process.env.IMAGE_STORAGE || "local",
   });
 });
 
