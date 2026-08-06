@@ -7,4 +7,4 @@ dist/
 coverage/
 
 # Local image uploads — never commit to git
-uploads/
+uploads//
