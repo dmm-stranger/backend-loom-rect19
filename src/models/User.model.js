@@ -3,13 +3,13 @@ import bcrypt from "bcryptjs";
 
 const addressSchema = new mongoose.Schema(
   {
-    label:      { type: String, default: "Home" },
-    line1:      { type: String, required: true },
-    city:       { type: String, required: true },
-    state:      { type: String, required: true },
+    label: { type: String, default: "Home" },
+    line1: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
     postalCode: { type: String, required: true },
-    country:    { type: String, required: true },
-    isDefault:  { type: Boolean, default: false },
+    country: { type: String, required: true },
+    isDefault: { type: Boolean, default: false },
   },
   { _id: true }
 );
@@ -18,38 +18,38 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [ true, "Name is required" ],
       trim: true,
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [ true, "Email is required" ],
       unique: true,
       lowercase: true,
       trim: true,
       validate: {
         validator: function (v) {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+          return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
         },
         message: "Please provide a valid email",
       },
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [ true, "Password is required" ],
       minlength: 6,
       select: false,
     },
     role: {
       type: String,
-      enum: ["customer", "admin"],
+      enum: [ "customer", "admin" ],
       default: "customer",
     },
     avatar: {
-      url:       { type: String, default: "" },
+      url: { type: String, default: "" },
       public_id: { type: String, default: "" },
     },
-    addresses: [addressSchema],
+    addresses: [ addressSchema ],
 
     // ─── Ban system ────────────────────────
     // Admin can ban a user to prevent login

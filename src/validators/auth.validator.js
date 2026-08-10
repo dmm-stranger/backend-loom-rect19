@@ -9,6 +9,9 @@ export const registerValidator = [
 ];
 
 export const loginValidator = [
-  body("email").isEmail().withMessage("A valid email is required"),
+  body("email")
+    .trim()
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    .withMessage("A valid email is required"),
   body("password").notEmpty().withMessage("Password is required"),
 ];
