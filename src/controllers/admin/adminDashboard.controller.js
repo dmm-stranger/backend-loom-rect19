@@ -3,6 +3,7 @@ import ApiResponse from "../../utils/ApiResponse.js";
 import Order from "../../models/Order.model.js";
 import Product from "../../models/Product.model.js";
 import User from "../../models/User.model.js";
+import Category from "../../models/Category.model.js";
 
 // @desc    Get admin dashboard stats
 // @route   GET /api/v1/admin/dashboard/stats
@@ -131,5 +132,108 @@ export const getDashboardStats = asyncHandler(async (req, res) => {
       topProducts,
       recentOrders,
     }, "Dashboard stats fetched")
+  );
+});
+
+// @desc    Get top customers ranked by number of orders placed
+// @route   GET /api/v1/admin/dashboard/top-customers
+// @access  Admin
+//
+// Query params:
+//   - limit (default 5)
+export const getTopCustomers = asyncHandler(async (req, res) => {
+  const limit = Math.max(1, Number(req.query.limit) || 5);
+
+  const topCustomers = await Order.aggregate([
+    {
+      $group: {
+        _id: "$user",
+        ordersCount: { $sum: 1 },
+        totalSpent: {
+          $sum: {
+            $cond: [ { $eq: [ "$paymentInfo.status", "paid" ] }, "$totalPrice", 0 ],
+          },
+        },
+      },
+    },
+    { $sort: { ordersCount: -1 } },
+    { $limit: limit },
+    {
+      $lookup: {
+        from: "users",
+        localField: "_id",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    { $unwind: "$user" },
+    {
+      $project: {
+        _id: 0,
+        userId: "$user._id",
+        name: "$user.name",
+        email: "$user.email",
+        avatar: "$user.avatar.url",
+        ordersCount: 1,
+        totalSpent: { $round: [ "$totalSpent", 2 ] },
+      },
+    },
+  ]);
+
+  res.status(200).json(
+    new ApiResponse(200, { topCustomers }, "Top customers fetched")
+  );
+});
+
+// @desc    Get revenue breakdown grouped by product category
+// @route   GET /api/v1/admin/dashboard/sales-by-category
+// @access  Admin
+//
+// Only counts paid orders. Joins order items → products → categories.
+export const getSalesByCategory = asyncHandler(async (req, res) => {
+  const salesByCategory = await Order.aggregate([
+    { $match: { "paymentInfo.status": "paid" } },
+    { $unwind: "$items" },
+    {
+      $lookup: {
+        from: "products",
+        localField: "items.product",
+        foreignField: "_id",
+        as: "productInfo",
+      },
+    },
+    { $unwind: { path: "$productInfo", preserveNullAndEmptyArrays: true } },
+    {
+      $group: {
+        _id: "$productInfo.category",
+        revenue: {
+          $sum: { $multiply: [ "$items.price", "$items.qty" ] },
+        },
+        unitsSold: { $sum: "$items.qty" },
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "_id",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
+    {
+      $project: {
+        _id: 0,
+        categoryId: "$category._id",
+        name: { $ifNull: [ "$category.name", "Uncategorized" ] },
+        revenue: { $round: [ "$revenue", 2 ] },
+        unitsSold: 1,
+      },
+    },
+    { $sort: { revenue: -1 } },
+  ]);
+
+  res.status(200).json(
+    new ApiResponse(200, { salesByCategory }, "Sales by category fetched")
   );
 });

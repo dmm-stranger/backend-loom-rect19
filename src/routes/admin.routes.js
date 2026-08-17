@@ -1,5 +1,5 @@
 import express from "express";
-import { getDashboardStats } from "../controllers/admin/adminDashboard.controller.js";
+import { getDashboardStats, getTopCustomers, getSalesByCategory } from "../controllers/admin/adminDashboard.controller.js";
 import { getAllOrders, getOrderAdmin, updateOrderStatus, deleteOrder } from "../controllers/admin/adminOrder.controller.js";
 import { getAllProductsAdmin, getProductAdmin, toggleFeatured, updateStock } from "../controllers/admin/adminProduct.controller.js";
 import { getAllUsers, getUserAdmin, updateUserRole, deleteUser, banUser } from "../controllers/admin/adminUser.controller.js";
@@ -15,6 +15,8 @@ router.use(authorize("admin"));
 
 // Dashboard
 router.get("/dashboard/stats", getDashboardStats);
+router.get("/dashboard/top-customers", getTopCustomers);
+router.get("/dashboard/sales-by-category", getSalesByCategory);
 
 // Orders
 router.get("/orders",              getAllOrders);
