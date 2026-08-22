@@ -68,34 +68,3 @@ export const deleteAddress = asyncHandler(async (req, res) => {
   await user.save();
   res.status(200).json(new ApiResponse(200, { addresses: user.addresses }, "Address deleted"));
 });
-
-// @desc    Permanently delete the logged-in user's own account
-// @route   DELETE /api/v1/users/account
-// @access  Private
-//
-// Requires the current password as confirmation (body: { password }) so a
-// hijacked session token alone can't be used to destroy the account.
-// Clears the auth cookie afterward since the account no longer exists.
-export const deleteAccount = asyncHandler(async (req, res) => {
-  const { password } = req.body;
-  if (!password) throw new ApiError(400, "Password is required to delete your account");
-
-  const user = await User.findById(req.user._id).select("+password");
-  if (!user) throw new ApiError(404, "User not found");
-
-  if (!(await user.matchPassword(password))) {
-    throw new ApiError(401, "Incorrect password");
-  }
-
-  await deleteImage(user.avatar?.url);
-  await user.deleteOne();
-
-  res.cookie("token", "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    expires: new Date(0),
-  });
-
-  res.status(200).json(new ApiResponse(200, null, "Account deleted successfully"));
-});

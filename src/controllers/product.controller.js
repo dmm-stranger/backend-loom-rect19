@@ -2,7 +2,6 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Product from "../models/Product.model.js";
-import Category from "../models/Category.model.js";
 import {
   uploadImage,
   getImageUrl,
@@ -26,21 +25,8 @@ export const getProducts = asyncHandler(async (req, res) => {
   const limit = Math.max(1, Number(req.query.limit) || 12);
   const skip  = (page - 1) * limit;
   const filter = {};
-  if (req.query.search) filter.$text = { $search: req.query.search };
-
-  // req.query.category arrives as a SLUG (e.g. "laptops") from the frontend,
-  // but Product.category is an ObjectId ref — resolve it first.
-  if (req.query.category) {
-    const category = await Category.findOne({ slug: req.query.category });
-    if (!category) {
-      // Unknown slug → no products, but a valid 200 response, not a crash.
-      return res.status(200).json(
-        new ApiResponse(200, { products: [], pagination: { total: 0, page, pages: 0, limit } }, "Products fetched")
-      );
-    }
-    filter.category = category._id;
-  }
-
+  if (req.query.search)   filter.$text     = { $search: req.query.search };
+  if (req.query.category) filter.category  = req.query.category;
   if (req.query.minPrice || req.query.maxPrice) {
     filter.price = {};
     if (req.query.minPrice) filter.price.$gte = Number(req.query.minPrice);
