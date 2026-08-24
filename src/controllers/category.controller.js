@@ -4,8 +4,6 @@ import ApiResponse from "../utils/ApiResponse.js";
 import Category from "../models/Category.model.js";
 import {
   uploadImage,
-  getImageUrl,
-  deleteImage,
 } from "../middleware/upload.middleware.js";
 
 export const getCategories = asyncHandler(async (req, res) => {

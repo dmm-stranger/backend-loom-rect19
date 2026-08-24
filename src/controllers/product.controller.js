@@ -2,44 +2,46 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Product from "../models/Product.model.js";
-import {
-  uploadImage,
-  getImageUrl,
-  deleteImage,
-} from "../middleware/upload.middleware.js";
+import Category from "../models/Category.model.js";
 
 // ─── helper: build image object from uploaded file ───
-const buildImageObject = async (file, folder = "techstore/products") => {
-  if (uploadImage) {
-    // Cloudinary — stream buffer to CDN
-    return await uploadImage(file.buffer, folder);
-  }
-  // Local — multer already saved file, just build path
-  return { url: getImageUrl(file.filename), public_id: file.filename };
-};
+const buildImageObject = (file, folder = "techstore/products") => uploadImage(file.buffer, folder);
 
 // ── PUBLIC ────────────────────────────────────────────
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const page  = Math.max(1, Number(req.query.page)  || 1);
+  const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.max(1, Number(req.query.limit) || 12);
-  const skip  = (page - 1) * limit;
+  const skip = (page - 1) * limit;
   const filter = {};
-  if (req.query.search)   filter.$text     = { $search: req.query.search };
-  if (req.query.category) filter.category  = req.query.category;
+  if (req.query.search) filter.$text = { $search: req.query.search };
+  if (req.query.category) {
+    // category query param is a slug (e.g. "laptops"), but Product.category
+    // is stored as an ObjectId ref — resolve the slug to its _id first.
+    const categoryDoc = await Category.findOne({ slug: req.query.category }).select("_id");
+    if (!categoryDoc) {
+      // No matching category — respond with an empty result set instead of
+      // throwing a CastError trying to filter by an invalid ObjectId.
+      return res.status(200).json(new ApiResponse(200, {
+        products: [],
+        pagination: { total: 0, page, pages: 0, limit },
+      }, "Products fetched"));
+    }
+    filter.category = categoryDoc._id;
+  }
   if (req.query.minPrice || req.query.maxPrice) {
     filter.price = {};
     if (req.query.minPrice) filter.price.$gte = Number(req.query.minPrice);
     if (req.query.maxPrice) filter.price.$lte = Number(req.query.maxPrice);
   }
   const sortMap = {
-    price_asc:  { price: 1 },
+    price_asc: { price: 1 },
     price_desc: { price: -1 },
-    rating:     { ratingsAverage: -1 },
-    newest:     { createdAt: -1 },
+    rating: { ratingsAverage: -1 },
+    newest: { createdAt: -1 },
   };
-  const sort = sortMap[req.query.sort] || sortMap.newest;
-  const [products, total] = await Promise.all([
+  const sort = sortMap[ req.query.sort ] || sortMap.newest;
+  const [ products, total ] = await Promise.all([
     Product.find(filter).populate("category", "name slug").sort(sort).skip(skip).limit(limit),
     Product.countDocuments(filter),
   ]);
@@ -56,7 +58,7 @@ export const getFeaturedProducts = asyncHandler(async (req, res) => {
 export const getProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = await Product.findOne({
-    $or: [{ _id: id.match(/^[a-f\d]{24}$/i) ? id : null }, { slug: id }],
+    $or: [ { _id: id.match(/^[a-f\d]{24}$/i) ? id : null }, { slug: id } ],
   }).populate("category", "name slug");
   if (!product) throw new ApiError(404, "Product not found");
   res.status(200).json(new ApiResponse(200, { product }, "Product fetched"));
@@ -88,14 +90,14 @@ export const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (!product) throw new ApiError(404, "Product not found");
   const { name, description, brand, category, price, discountPrice, stock, isFeatured, specs, removeImages } = req.body;
-  if (name        !== undefined) product.name        = name;
+  if (name !== undefined) product.name = name;
   if (description !== undefined) product.description = description;
-  if (brand       !== undefined) product.brand       = brand;
-  if (category    !== undefined) product.category    = category;
-  if (price       !== undefined) product.price       = price;
+  if (brand !== undefined) product.brand = brand;
+  if (category !== undefined) product.category = category;
+  if (price !== undefined) product.price = price;
   if (discountPrice !== undefined) product.discountPrice = discountPrice;
-  if (stock       !== undefined) product.stock       = stock;
-  if (isFeatured  !== undefined) product.isFeatured  = isFeatured === "true" || isFeatured === true;
+  if (stock !== undefined) product.stock = stock;
+  if (isFeatured !== undefined) product.isFeatured = isFeatured === "true" || isFeatured === true;
   if (specs) {
     try { product.specs = JSON.parse(specs); }
     catch { throw new ApiError(400, "specs must be a valid JSON string"); }
@@ -104,7 +106,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     let toRemove = [];
     try { toRemove = JSON.parse(removeImages); }
     catch { throw new ApiError(400, "removeImages must be a valid JSON array"); }
-    await Promise.all(toRemove.map((pub_id) => deleteImage(product.images.find(i => i.public_id === pub_id)?.url)));
+    await Promise.all(toRemove.map((publicId) => deleteImage(publicId)));
     product.images = product.images.filter((img) => !toRemove.includes(img.public_id));
   }
   const newFiles = req.files || [];
@@ -123,7 +125,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
 export const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (!product) throw new ApiError(404, "Product not found");
-  await Promise.all(product.images.map((img) => deleteImage(img.url)));
+  await Promise.all(product.images.map((img) => deleteImage(img.public_id)));
   await product.deleteOne();
   res.status(200).json(new ApiResponse(200, null, "Product deleted"));
 });
