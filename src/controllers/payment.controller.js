@@ -5,7 +5,7 @@ import Order from "../models/Order.model.js";
 import Product from "../models/Product.model.js";
 import Cart from "../models/Cart.model.js";
 import Coupon from "../models/Coupon.model.js";
-import stripe from "../config/stripe.js";
+import getStripe from "../config/stripe.js";
 
 // @desc    Create a Stripe PaymentIntent for an order
 // @route   POST /api/v1/payments/create-payment-intent
@@ -37,7 +37,7 @@ export const createPaymentIntent = asyncHandler(async (req, res) => {
   // e.g. $99.99 → 9999 cents
   const amount = Math.round(order.totalPrice * 100);
 
-  const paymentIntent = await stripe.paymentIntents.create({
+  const paymentIntent = await getStripe().paymentIntents.create({
     amount,
     currency: "usd",
     metadata: {
@@ -76,7 +76,7 @@ export const stripeWebhook = asyncHandler(async (req, res) => {
 
   try {
     // Verify the event came from Stripe using the webhook secret
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       req.body,              // raw buffer (not parsed JSON)
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
