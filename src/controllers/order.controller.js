@@ -58,7 +58,7 @@ export const createOrder = asyncHandler(async (req, res) => {
   }
 
   const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
-    calculateOrderTotals(cart.items, discount);
+    await calculateOrderTotals(cart.items, discount);
 
   // ── Step 4: Create order ────────────────────
   const order = await Order.create({

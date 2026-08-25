@@ -20,6 +20,25 @@ export const getWishlist = asyncHandler(async (req, res) => {
     );
   }
 
+  // If a product was deleted from the catalog after being wishlisted,
+  // populate() leaves a `null` in its place (it doesn't remove the ref).
+  // Without filtering these out, `.map((p) => p._id)` below throws and
+  // this endpoint 500s for every user who had that product wishlisted —
+  // which also silently breaks the wishlist icon state on product cards.
+  const deletedProductIds = wishlist.products
+    .filter((p) => p === null)
+    .length;
+  wishlist.products = wishlist.products.filter((p) => p !== null);
+
+  // Prune the dangling references from the DB so this stays clean and we
+  // don't re-do this filtering on every future read.
+  if (deletedProductIds > 0) {
+    await Wishlist.updateOne(
+      { _id: wishlist._id },
+      { $set: { products: wishlist.products.map((p) => p._id) } }
+    );
+  }
+
   // Also return a flat array of productIds so the frontend
   // can quickly check if a product is wishlisted
   // e.g. wishlist icon filled/unfilled on product cards

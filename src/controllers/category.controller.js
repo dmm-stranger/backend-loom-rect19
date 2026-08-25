@@ -4,6 +4,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import Category from "../models/Category.model.js";
 import {
   uploadImage,
+  deleteImage,
 } from "../middleware/upload.middleware.js";
 
 export const getCategories = asyncHandler(async (req, res) => {
@@ -50,7 +51,7 @@ export const updateCategory = asyncHandler(async (req, res) => {
   if (parent !== undefined) category.parent = parent || null;
 
   if (req.file) {
-    await deleteImage(category.image?.url);
+    await deleteImage(category.image?.public_id);
     if (uploadImage) {
       category.image = await uploadImage(req.file.buffer, "techstore/categories");
     } else {
@@ -65,7 +66,7 @@ export const updateCategory = asyncHandler(async (req, res) => {
 export const deleteCategory = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
   if (!category) throw new ApiError(404, "Category not found");
-  await deleteImage(category.image?.url);
+  await deleteImage(category.image?.public_id);
   await category.deleteOne();
   res.status(200).json(new ApiResponse(200, null, "Category deleted"));
 });

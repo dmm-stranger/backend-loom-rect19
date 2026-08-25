@@ -145,7 +145,11 @@ export const updateItem = asyncHandler(async (req, res) => {
   const cart = await Cart.findOne({ user: req.user._id });
   if (!cart) throw new ApiError(404, "Cart not found");
 
-  const item = cart.items.id(itemId); // Mongoose subdocument lookup by _id
+  // The frontend's cartApi.ts sends the *product* id in this URL param
+  // (`/cart/items/:productId`), not the cart item subdocument's own _id —
+  // `cart.items.id(itemId)` was looking up the wrong field entirely, so
+  // this always 404'd and the qty +/- buttons silently did nothing.
+  const item = cart.items.find((i) => i.product.toString() === itemId);
   if (!item) throw new ApiError(404, "Item not found in cart");
 
   // Verify stock for the new quantity
@@ -172,10 +176,11 @@ export const removeItem = asyncHandler(async (req, res) => {
   const cart = await Cart.findOne({ user: req.user._id });
   if (!cart) throw new ApiError(404, "Cart not found");
 
-  const item = cart.items.id(itemId);
-  if (!item) throw new ApiError(404, "Item not found in cart");
+  // Same product-id-vs-subdocument-id mismatch as updateItem above.
+  const itemExists = cart.items.some((i) => i.product.toString() === itemId);
+  if (!itemExists) throw new ApiError(404, "Item not found in cart");
 
-  item.deleteOne(); // remove subdocument
+  cart.items = cart.items.filter((i) => i.product.toString() !== itemId);
   await cart.save();
 
   const cartData = await buildCartResponse(cart);
