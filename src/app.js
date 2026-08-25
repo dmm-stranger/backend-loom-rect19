@@ -8,6 +8,7 @@ import notFound from "./middleware/notFound.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import { apiLimiter } from "./middleware/rateLimiter.middleware.js";
 
+
 const app = express();
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));

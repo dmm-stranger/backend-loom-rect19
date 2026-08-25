@@ -3,6 +3,10 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Product from "../models/Product.model.js";
 import Category from "../models/Category.model.js";
+import {
+  uploadImage,
+  deleteImage,
+} from "../middleware/upload.middleware.js";
 
 // ─── helper: build image object from uploaded file ───
 const buildImageObject = (file, folder = "techstore/products") => uploadImage(file.buffer, folder);
@@ -16,12 +20,8 @@ export const getProducts = asyncHandler(async (req, res) => {
   const filter = {};
   if (req.query.search) filter.$text = { $search: req.query.search };
   if (req.query.category) {
-    // category query param is a slug (e.g. "laptops"), but Product.category
-    // is stored as an ObjectId ref — resolve the slug to its _id first.
     const categoryDoc = await Category.findOne({ slug: req.query.category }).select("_id");
     if (!categoryDoc) {
-      // No matching category — respond with an empty result set instead of
-      // throwing a CastError trying to filter by an invalid ObjectId.
       return res.status(200).json(new ApiResponse(200, {
         products: [],
         pagination: { total: 0, page, pages: 0, limit },
